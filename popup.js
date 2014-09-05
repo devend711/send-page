@@ -12,8 +12,8 @@
 
 var pageSender = {
 
-  showSuccess: function() {
-    $("div#success").text('emailed the link!');
+  showSuccessMessage: function(message) {
+    $("div#success").fadeTo('medium', 100).text(message).delay(800).fadeTo('medium', 0);
   },
 
     showPhotos_: function (e) {
@@ -26,34 +26,41 @@ var pageSender = {
     }
   },
 
-  sendEmailFunction: function (url){
-    chrome.storage.local.get('userEmail', function (result) {
-      $.ajax({
-      type: 'POST',
-      url: 'https://mandrillapp.com/api/1.0/messages/send.json',
-      data: {
-        'key': 'ZzTcuFPhdBA6ohwJUVR27A',
-        'message': {
-          'from_email': 'devend711@gmail.com',
-          'to': [
-              {
-                'email': result.userEmail,
-                'name': 'the recipients name',
-                'type': 'to'
-              }
-            ],
-          'autotext': 'true',
-          'subject': 'You sent yourself a link! (' + url + ')',
-          'html': '<a href="'+ url +'">You sent yourself a link!</a><br/>' + url
+  sendEmailFunction: function (url, title){
+    chrome.storage.sync.get('userEmail', function (result) {
+      console.log(result.userEmail);
+      if (result.userEmail==null) { // 'get' failed
+          pageSender.showSuccessMessage('set your email!');
+          return;
+      } else {
+        $.ajax({
+        type: 'POST',
+        url: 'https://mandrillapp.com/api/1.0/messages/send.json',
+        data: {
+          'key': 'ZzTcuFPhdBA6ohwJUVR27A',
+          'message': {
+            'from_email': result.userEmail,
+            'to': [
+                {
+                  'email': result.userEmail,
+                  'name': 'the recipients name',
+                  'type': 'to'
+                }
+              ],
+            'autotext': 'true',
+            'subject': 'You sent yourself a link! (' + title + ')',
+            'html': '<a href="'+ url +'">You sent yourself a link!</a><br/>' + url
+          }
+        },
+        success: function(result) {
+          console.log('send succeeded :)');
+          pageSender.showSuccessMessage('sent yourself the link!');
+        },
+        failure: function(result) {
+          console.log('send failed :(');
         }
-      },
-      success: function(result) {
-        console.log('send succeeded!');
-      },
-      failure: function(result) {
-        console.log('send failed!');
+       }); // end of ajax call
       }
-     });
     });
   },
 
@@ -62,9 +69,8 @@ var pageSender = {
     var tabUrl;
     chrome.tabs.getSelected(null, function(tab) {
       tabUrl = tab.url;
-      console.log(tabUrl);
-      pageSender.sendEmailFunction(tabUrl);
-      pageSender.showSuccess();
+      tabTitle = tab.title;
+      pageSender.sendEmailFunction(tabUrl, tabTitle);
     });
   }
 };

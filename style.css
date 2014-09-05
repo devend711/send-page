@@ -2,15 +2,21 @@ body {
     min-width: 357px;
     overflow-x: hidden;
     font-family: Arial;
+    font-size: 18px;
 }
 
-div#success {
-	color: green;
-}
-
-a > img#settings_icon {
+img.small-icon {
 	border: none;
 	outline: none;
 	width: 25px;
-	height: 25px;
+	height: 25px;	
 }
+
+div.success-text {
+	color: green;
+}
+
+div.const-height {
+	height: 1.5em;
+}
+
