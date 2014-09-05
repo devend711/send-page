@@ -4,10 +4,12 @@
   "name": "Send-Page",
   "description": "Send a page to your phone in one click",
   "version": "1.0",
+  "options_page": "options.html",
 
   "permissions": [
     "https://secure.flickr.com/",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "browser_action": {
     "default_icon": "cat.png",

@@ -1,0 +1,16 @@
+body {
+    min-width: 357px;
+    overflow-x: hidden;
+    font-family: Arial;
+}
+
+div#success {
+	color: green;
+}
+
+a > img#settings_icon {
+	border: none;
+	outline: none;
+	width: 25px;
+	height: 25px;
+}
