@@ -1,4 +1,4 @@
 send-page
 =========
 
-chrome extension
+chrome extension to easily email yourself whatever page you're on
