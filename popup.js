@@ -76,6 +76,12 @@ var pageSender = {
 };
 
 // Run our kitten generation script as soon as the document's DOM is ready.
-document.addEventListener('DOMContentLoaded', function () {
-  pageSender.makeEmail();
+// document.addEventListener('DOMContentLoaded', function () {
+//   pageSender.makeEmail();
+// });
+
+$(document).ready(function() {
+  $("img#send-button").click(function() {
+    pageSender.makeEmail();
+  });
 });
